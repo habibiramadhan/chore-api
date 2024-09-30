@@ -23,3 +23,14 @@ async def get_all_transactions(db:db_dependency):
         return {"status": "OK", "data": result}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+    
+@transaction_router.get("/{transaction_id}")
+async def get_transaction_by_id(transaction_id:int, db:db_dependency):
+    try:
+        result = await transaction_service.get_transaction_by_id(transaction_id, db)
+        if result:
+            return {"status": "OK",  "data":result}
+        else:
+            raise HTTPException(status_code=404, detail=f"Transaction-{transaction_id} is not found")
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
