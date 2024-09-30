@@ -11,3 +11,7 @@ class TransactionService:
         db.commit()
         db.refresh(new_transaction)
         return new_transaction
+    
+    async def get_all_transactions(self, db : db_dependency):
+        result = db.query(Transaction).all()
+        return result
