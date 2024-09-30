@@ -1,5 +1,7 @@
 # Ignore virtual environment
    fast_env/
+   venv/
+   env/
 
 # Ignore environment variables file
 .env
