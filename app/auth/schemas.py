@@ -1,16 +1,10 @@
 from pydantic import BaseModel
 
-
-
-#===============================================================
-# SCHEMAS FOR AUTH
-#===============================================================
-
 class UserCreate(BaseModel):
     username: str
     password: str
 
-class UserResponse(BaseModel):  # Ganti nama UserOut menjadi UserResponse
+class UserResponse(BaseModel):
     username: str
     is_active: bool
 

@@ -9,3 +9,7 @@ app = FastAPI()
 Base.metadata.create_all(bind=engine)
 
 app.include_router(auth_router, prefix="/auth", tags=["auth"])
+
+@app.get("/")
+def read_root():
+    return {"Hello": "World"}

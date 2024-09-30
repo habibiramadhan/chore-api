@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, Float, String, Date, Enum, CheckConstraint,Boolean
+from sqlalchemy import Column, Integer, Float, String, Date, Enum, CheckConstraint, Boolean
 from app.database import Base
 import enum
 from datetime import date
@@ -16,7 +16,7 @@ class User(Base):
     is_active = Column(Boolean, default=True)
 
 class Transaction(Base):
-    __tablename__ = 'transaction'
+    __tablename__ = 'transactions'
 
     transaction_id = Column(Integer, primary_key=True, index=True, autoincrement=True)
     date = Column(Date, default=date.today)
