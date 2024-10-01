@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, Float, String, Date, Enum, CheckConstraint
+from sqlalchemy import Column, Integer, Float, String, Date, Enum, CheckConstraint, Boolean
 from app.database import Base
 import enum
 from datetime import date
@@ -8,15 +8,15 @@ class TransactionCategory(enum.Enum):
     EXPENSE = "expense"
 
 class User(Base):
-    __tablename__= "user"
-    
-    user_id = Column(Integer, primary_key=True, index=True, autoincrement=True)
-    name = Column(String, nullable=False)
-    username = Column(String, unique=True, nullable=False)
-    password = Column(String, nullable=False)
+    __tablename__ = "users"
+
+    id = Column(Integer, primary_key=True, index=True)
+    username = Column(String, unique=True, index=True)
+    hashed_password = Column(String)
+    is_active = Column(Boolean, default=True)
 
 class Transaction(Base):
-    __tablename__ = 'transaction'
+    __tablename__ = 'transactions'
 
     transaction_id = Column(Integer, primary_key=True, index=True, autoincrement=True)
     date = Column(Date, default=date.today)
