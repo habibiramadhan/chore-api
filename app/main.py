@@ -5,7 +5,6 @@ from app.auth.routes import router as auth_router
 import app.models as models
 from app.transaction.routes import transaction_router
 
-
 app = FastAPI()
 
 # Create tables if they don't exist

@@ -16,9 +16,14 @@ username=testuser&password=testpassword
 
 **Contoh `curl`:**
 ```bash
-curl -X POST http://localhost:8000/auth/token \
--H "Content-Type: application/x-www-form-urlencoded" \
--d "username=testuser&password=testpassword"
+curl -X 'POST' \
+  'http://localhost:8000/auth/register' \
+  -H 'Content-Type: application/json' \
+  -d '{
+  "username": "testuser",
+  "password": "password123"
+}'
+
 ```
 
 **Respons**:
@@ -46,9 +51,11 @@ curl -X POST http://localhost:8000/auth/token \
 
 **Contoh `curl`:**
 ```bash
-curl -X POST http://localhost:8000/auth/register \
--H "Content-Type: application/json" \
--d '{ "username": "testuser", "password": "testpassword" }'
+curl -X 'POST' \
+  'http://localhost:8000/auth/token' \
+  -H 'Content-Type: application/x-www-form-urlencoded' \
+  -d 'username=testuser&password=password123'
+
 ```
 
 **Respons**:
@@ -71,8 +78,9 @@ Authorization: Bearer your_jwt_token
 
 **Contoh `curl`:**
 ```bash
-curl -X GET http://localhost:8000/auth/me \
--H "Authorization: Bearer your_jwt_token"
+curl -X 'GET' \
+  'http://localhost:8000/auth/users/me' \
+  -H 'Authorization: Bearer <your_jwt_token>'
 ```
 
 **Respons**:
