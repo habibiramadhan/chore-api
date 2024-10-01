@@ -14,6 +14,17 @@ async def create_transaction(transaction:CreateTransactionModel, db : db_depende
         return {"status": "OK", "data": new_transaction}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+    
+# DELETE
+@transaction_router.delete("/{transaction_id}")
+async def delete_transaction(transaction_id:int, db:db_dependency):
+    try:
+        deleted_transaction = await transaction_service.delete_transaction(transaction_id, db)
+        if deleted_transaction:
+            return deleted_transaction
+        raise HTTPException(status_code=404, detail=f"Transaction-{transaction_id} doesn't exist")
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
 
 # PUT
 @transaction_router.put("/{transaction_id}")

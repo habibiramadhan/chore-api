@@ -12,7 +12,16 @@ class TransactionService:
         db.commit()
         db.refresh(new_transaction)
         return new_transaction
-  
+    
+    # Delete
+    async def delete_transaction(self, transaction_id:int, db:db_dependency):
+        transaction = db.query(models.Transaction).filter(models.Transaction.transaction_id == transaction_id).first()
+        if transaction:
+            db.delete(transaction)
+            db.commit()
+            return transaction
+        return
+      
     # update
     async def update_transaction(self, transaction_id:int, transaction_update: UpdateTransactionModel, db:db_dependency):
         transaction = db.query(Transaction).filter(Transaction.transaction_id == transaction_id).first()
