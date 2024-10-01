@@ -9,3 +9,10 @@ class CreateTransactionModel(BaseModel):
     category: models.TransactionCategory
     description: Optional[str]
     nominal: float
+
+class UpdateTransactionModel(BaseModel):
+    date: Optional[date]
+    name: Optional[str]
+    category: Optional[models.TransactionCategory]
+    description: Optional[str]
+    nominal: Optional[float]
