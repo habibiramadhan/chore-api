@@ -6,7 +6,7 @@ from app.database import db_dependency
 class TransactionService:
     # Create
     async def create_transaction(self, transaction: CreateTransactionModel, db : db_dependency):
-        transaction_data_dict = transaction.model_dump()
+        transaction_data_dict = transaction.__dict__
         new_transaction = Transaction(**transaction_data_dict)
         db.add(new_transaction)
         db.commit()
