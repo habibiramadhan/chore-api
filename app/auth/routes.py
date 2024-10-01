@@ -9,7 +9,7 @@ from passlib.context import CryptContext
 from jose import JWTError
 
 router = APIRouter()
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="auth/token")
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 @router.post("/register", response_model=UserResponse, status_code=status.HTTP_201_CREATED)
