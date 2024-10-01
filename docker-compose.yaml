@@ -1,0 +1,30 @@
+version: "3"
+
+services:
+  kasku-api:
+    build: .
+    command: sh -c "uvicorn app.main:app --reload --port=8030 --host=0.0.0.0"
+    env_file:
+      - .env
+    ports:
+      - 8030:8030
+    volumes:
+      - .:/app
+    depends_on:
+      - postgres_db
+
+  postgres_db:
+    image: postgres:14.1-alpine
+    restart: always
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=kasku
+    ports:
+      - 5432:5432
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
+    driver: local
