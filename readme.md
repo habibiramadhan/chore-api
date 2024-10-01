@@ -55,4 +55,4 @@ git commit -m "fix: PRODUCT-123 menangani error validasi input"
 
 ---
 ### Kredit
-[Habibi](c) 2023
+[PT Qiscus Tekno Indonesia](c) 2024
