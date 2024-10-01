@@ -24,6 +24,8 @@ async def delete_transaction(transaction_id:int, db:db_dependency):
             return deleted_transaction
         raise HTTPException(status_code=404, detail=f"Transaction-{transaction_id} doesn't exist")
     except Exception as e:
+        if (str(e)==""):
+            raise HTTPException(status_code=404, detail=f"Transaction-{transaction_id} doesn't exist")
         raise HTTPException(status_code=500, detail=str(e))
 
 # PUT
@@ -34,6 +36,10 @@ async def update_transaction(transaction_id:int, transaction_update:UpdateTransa
         if updated_transaction:
             return {"status": "OK", "data": updated_transaction}
         raise HTTPException(status_code=404, detail=f"Transaction-{transaction_id} doesn't exist")
+    except Exception as e:
+        if (str(e)==""):
+            raise HTTPException(status_code=404, detail=f"Transaction-{transaction_id} doesn't exist")
+        raise HTTPException(status_code=500, detail=str(e))
         
 # GET
 @transaction_router.get("/")
@@ -54,6 +60,8 @@ async def get_transactions_filtered(*, transaction_category:str=None, transactio
             return {"status": "OK",  "data":result}
         raise HTTPException(status_code=404, detail=f"Transaction is not found")
     except Exception as e:
+        if (str(e)==""):
+            raise HTTPException(status_code=404, detail=f"Transaction is not found")
         raise HTTPException(status_code=500, detail=str(e))    
     
 @transaction_router.get("/{transaction_id}")
@@ -64,4 +72,6 @@ async def get_transaction_by_id(transaction_id:int, db:db_dependency):
             return {"status": "OK",  "data":result}
         raise HTTPException(status_code=404, detail=f"Transaction-{transaction_id} is not found")
     except Exception as e:
+        if (str(e)==""):
+            raise HTTPException(status_code=404, detail=f"Transaction-{transaction_id} is not found")
         raise HTTPException(status_code=500, detail=str(e))
