@@ -1,5 +1,5 @@
 from sqlalchemy import Table, Column, Integer, String, MetaData, inspect
-from app.database import engine
+from app.database import engine, db_dependency
 from typing import List
 from fastapi import UploadFile
 from langchain.text_splitter import RecursiveCharacterTextSplitter
@@ -39,10 +39,22 @@ class RAGService:
 
         return chunks
 
-    def __add_chunk_to_table(self, chunks:List[str])->None:
-        pass
+    def __add_chunk_to_table(self, chunks:List[str], table_name:str, db:db_dependency)->None:
+        metadata = MetaData()
+        table = Table(table_name, metadata, autoload_with=engine)
+        for chunk in chunks:
+            new_row = {'text': chunk}
+            statement = table.insert().values(new_row)
 
-    async def add_documents(self, username:str, file:UploadFile) -> None:
+            try:
+                db.execute(statement)
+                db.commit()
+                print(f"Inserted row into {table_name}.")
+            except Exception as e:
+                db.rollback()
+                print(f"Failed to insert row into {table_name}: {e}")
+
+    async def add_documents(self, username:str, file:UploadFile, db:db_dependency) -> None:
         table_name = f'documents_{username.replace(" ","")}'
         
         # Create new table if it doesn't exist
@@ -55,5 +67,5 @@ class RAGService:
         # Chunking
         chunks = self.__chunk_pdf(pages)
         
-        # # Add chunk to table
-        # self.__add_chunk_to_table(chunks)
+        # Add chunk to table
+        self.__add_chunk_to_table(chunks, table_name, db)
