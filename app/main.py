@@ -4,6 +4,7 @@ from app.models import User, Base
 from app.auth.routes import router as auth_router  
 import app.models as models
 from app.transaction.routes import transaction_router
+from app.rag.routes import rag_router
 
 app = FastAPI()
 
@@ -15,6 +16,9 @@ app.include_router(auth_router, prefix="/auth", tags=["auth"])
 
 # Include the transaction routes
 app.include_router(transaction_router, prefix="/transaction", tags=["transaction"])
+
+# Include the rag routes
+app.include_router(rag_router, prefix="/rag", tags=["rag"])
 
 @app.get("/")
 def read_root():
