@@ -1,4 +1,4 @@
-from sqlalchemy import Table, Column, Integer, String, MetaData
+from sqlalchemy import Table, Column, Integer, String, MetaData, inspect
 from app.database import engine
 from typing import List
 from fastapi import UploadFile
@@ -32,11 +32,11 @@ class RAGService:
         pass
 
     async def add_documents(self, username:str, file:UploadFile) -> None:
-        # table_name = f'documents_{username.replace(" ","")}'
+        table_name = f'documents_{username.replace(" ","")}'
         
-        # # Create new table if it doesn't exist
-        # if not engine.dialect.has_table(engine, table_name):
-        #     self.__create_user_documents_table(table_name)
+        # Create new table if it doesn't exist
+        if not inspect(engine).has_table(table_name):
+            self.__create_user_documents_table(table_name)
         
         # # Load file
         # pages = self.__load_pdf_file(file)
@@ -48,4 +48,3 @@ class RAGService:
         
         # # Add chunk to table
         # self.__add_chunk_to_table(chunks)
-        pass
