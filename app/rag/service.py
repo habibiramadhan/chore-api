@@ -2,6 +2,7 @@ from sqlalchemy import Table, Column, Integer, String, MetaData, inspect
 from app.database import engine
 from typing import List
 from fastapi import UploadFile
+from langchain.text_splitter import RecursiveCharacterTextSplitter
 import fitz
 
 class RAGService:
@@ -23,8 +24,20 @@ class RAGService:
         pages = fitz.open(stream=contents, filetype="pdf")
         return pages
 
-    def __chunk_text(self, texts:str) -> List[str]:
-        pass
+    def __chunk_pdf(self, pages:fitz.Document, char_limit:int = 1000, overlap:int = 100) -> List[str]:
+        # Initialize
+        text_splitter = RecursiveCharacterTextSplitter(chunk_size=char_limit, chunk_overlap=overlap)
+        chunks = []
+        text = ""
+        
+        # Combine all text in pdf file
+        for page in pages:
+            text += (page.get_text().encode("ascii", "ignore").decode("utf-8", "ignore") + " ")
+
+        # Split text into chunks
+        chunks = text_splitter.split_text(text)
+
+        return chunks
 
     def __add_chunk_to_table(self, chunks:List[str])->None:
         pass
@@ -39,10 +52,8 @@ class RAGService:
         # Load file
         pages = await self.__load_pdf_file(file)
 
-        # # Chunking
-        # chunks = []
-        # for page in pages:
-        #     chunks += self.__chunk_text(page.get_text())
+        # Chunking
+        chunks = self.__chunk_pdf(pages)
         
         # # Add chunk to table
         # self.__add_chunk_to_table(chunks)
