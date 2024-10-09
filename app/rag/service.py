@@ -2,8 +2,7 @@ from sqlalchemy import Table, Column, Integer, String, MetaData, inspect
 from app.database import engine
 from typing import List
 from fastapi import UploadFile
-
-# import fitz
+import fitz
 
 class RAGService:
     # Create
@@ -19,11 +18,10 @@ class RAGService:
         # Create table to db
         metadata.create_all(engine)
     
-    def __load_pdf_file(self, file:UploadFile):
-        # pages = fitz.open()
-        # return pages
-        pass
-
+    async def __load_pdf_file(self, file:UploadFile):
+        contents = await file.read()
+        pages = fitz.open(stream=contents, filetype="pdf")
+        return pages
 
     def __chunk_text(self, texts:str) -> List[str]:
         pass
@@ -38,8 +36,8 @@ class RAGService:
         if not inspect(engine).has_table(table_name):
             self.__create_user_documents_table(table_name)
         
-        # # Load file
-        # pages = self.__load_pdf_file(file)
+        # Load file
+        pages = await self.__load_pdf_file(file)
 
         # # Chunking
         # chunks = []
